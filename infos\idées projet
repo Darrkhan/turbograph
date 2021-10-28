@@ -1,0 +1,28 @@
+PROJET : OUTIL PERMETTANT DE TRACER DES GRAPHES (avec langage)
+
+Languages : 
+    -C++
+    -Qt (graphique)
+    
+Format :
+    Application Windows
+    
+Fonctionnalités minimales :
+    -Axes x y
+    -Variable x
+    -Opérateur +-/*...
+    -Fonctions mathématiques (sin,cos,tan...)
+    -Parenthèses
+                avancées / possibles :
+    -Constantes
+    -Fonctions intermédiaires
+    -Paramètres d'affichage (intervalle)
+    -Plusieurs graphes à la fois
+    -Gestions axes et échelles
+    -Zoom / dézoom
+    -Calcul de l'aire sous la courbe
+    -Obtenir les coords de d'un points
+    -Espace cartésien ou polaire
+    -Tangente en un point
+    -Dérivé d'une fonction
+    -
