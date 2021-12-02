@@ -72,7 +72,7 @@ union YYSTYPE
 
   double valeur;
   char nom[50];
-  double tableau[1000];
+  //double tableau[1000];
 
 #line 78 "parser.h"
 

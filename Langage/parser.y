@@ -16,7 +16,7 @@
 
   // Déclaration de la map qui associe les noms des variables à leur valeur
   map<string,double> variables ;
-  map<string,double> fonction ;
+  //map<string,double> fonction ;
 
 
   double i = -1000;
@@ -28,7 +28,7 @@
 %union {
   double valeur;
   char nom[50];
-  double tableau[1000];
+  //double tableau[1000];
 }
 
 %token <valeur> NUM
@@ -36,7 +36,7 @@
 %token <nom> FCT
 %token <nom> INC
 %type <valeur> expr 
-%type <tableau> newexpr 
+//%type <tableau> newexpr 
 %token SIN
 %token COS
 
@@ -53,7 +53,7 @@ instruction : expr         { printf("Résultat du calcul : %g\n", $1); }
                            }
 
 
-            | newexpr      { printf("Résultat du calcul : %g\n", $1); } //à voir, à modifier pour afficher le format de newexpr
+            /*| newexpr      { printf("Résultat du calcul : %g\n", $1); } //à voir, à modifier pour afficher le format de newexpr
             | FCT '=' newexpr { fonction[$1]=$3;  
                                 printf ("Affectation de %g à %s\n", $3, $1);
 
@@ -66,7 +66,7 @@ newexpr: FCT             { try {
                                fonction[$1]=0;
                                $$ = 0;
                                } 
-                         }
+                         }*/
 
 
 expr:  NUM               { $$ = $1; }
