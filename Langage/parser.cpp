@@ -1142,7 +1142,7 @@ yyreduce:
   case 8: /* expr: SIN '(' expr ')'  */
 #line 82 "parser.y"
                          { (yyval.valeur) = sin((yyvsp[-1].valeur)); printf ("sin(%g) = %g\n", (yyvsp[-1].valeur), (yyval.valeur) ); 
-                            ofstream a("C:/Users/Administrateur/Documents/TurboGraph_V2/Langage/aled.txt", ios::app);
+                            ofstream a("/home/darrkhan/turbograph/Langage/aled.txt", ios::app);
                             if(a){
                               a << i/100 << " " << sin(i/100) << endl;
                             }
@@ -1398,9 +1398,9 @@ int yyerror(char *s) {
 int main(int argc, char **argv) {
   printf("Calculette V1.0\n");
 
-  ofstream a("C:/Users/Administrateur/Documents/TurboGraph_V2/Langage/aled.txt");
+  ofstream a("/home/darrkhan/turbograph/Langage/aled.txt");
   for(i = -1000; i < 1000; i++){
-    yyin = fopen( "C:\\Users\\Administrateur\\Documents\\Turbograph_V2\\Langage\\test.txt", "r" );
+    yyin = fopen( "/home/darrkhan/turbograph/Langage/test.txt", "r" );
     yyparse();
   }				
 
