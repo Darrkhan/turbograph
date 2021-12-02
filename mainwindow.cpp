@@ -32,7 +32,8 @@ MainWindow::~MainWindow()
 void MainWindow::on_draw_clicked()
 {
     // Création d'un objet QFile
-    QFile file("C:/Users/Administrateur/Documents/TurboGraph_V2/Langage/test.txt");
+    //QFile file("C:/Users/Administrateur/Documents/TurboGraph_V2/Langage/test.txt");
+    QFile file("/home/darrkhan/turbograph/Langage/test.txt");
     // On ouvre notre fichier en lecture seule et on vérifie l'ouverture
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
         return;
@@ -42,12 +43,13 @@ void MainWindow::on_draw_clicked()
     // Écriture des différentes lignes dans le fichier
     flux << ui->function->text();
 
-
-    system ("start C:\\Users\\Administrateur\\Documents\\TurboGraph_V2\\Langage\\calculette.exe");
+    //system ("start C:\\Users\\Administrateur\\Documents\\TurboGraph_V2\\Langage\\calculette.exe");
+    system ("start /home/darrkhan/turbograph/Langage/calculette.exe");
 
     QVector<double> x, y;
 
-    ifstream monFlux("C:/Users/Administrateur/Documents/TurboGraph_V2/Langage/aled.txt");  //Ouverture d'un fichier en lecture
+    //ifstream monFlux("C:/Users/Administrateur/Documents/TurboGraph_V2/Langage/aled.txt");
+    ifstream monFlux("/home/darrkhan/turbograph/Langage/aled.txt");  //Ouverture d'un fichier en lecture
 
     if(monFlux){
         string line;
