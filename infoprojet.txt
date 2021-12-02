@@ -26,7 +26,24 @@ Fonctionnalités minimales :
     -Tangente en un point
     -Dérivé d'une fonction
 
-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+-
+ggggggggggggg
 
 
 
