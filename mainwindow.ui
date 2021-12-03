@@ -24,27 +24,27 @@
      </rect>
     </property>
    </widget>
-   <widget class="QLineEdit" name="function">
-    <property name="geometry">
-     <rect>
-      <x>680</x>
-      <y>50</y>
-      <width>113</width>
-      <height>24</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QPushButton" name="draw">
     <property name="geometry">
      <rect>
-      <x>810</x>
-      <y>50</y>
+      <x>920</x>
+      <y>60</y>
       <width>80</width>
       <height>25</height>
      </rect>
     </property>
     <property name="text">
      <string>Tracer</string>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="function">
+    <property name="geometry">
+     <rect>
+      <x>680</x>
+      <y>60</y>
+      <width>221</width>
+      <height>85</height>
+     </rect>
     </property>
    </widget>
   </widget>

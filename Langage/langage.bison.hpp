@@ -35,8 +35,8 @@
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
 
-#ifndef YY_YY_PARSER_H_INCLUDED
-# define YY_YY_PARSER_H_INCLUDED
+#ifndef YY_YY_LANGAGE_BISON_HPP_INCLUDED
+# define YY_YY_LANGAGE_BISON_HPP_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -44,6 +44,16 @@
 #if YYDEBUG
 extern int yydebug;
 #endif
+/* "%code requires" blocks.  */
+#line 68 "langage.y"
+
+    typedef struct adr {
+        int jmp;  // adresse du jmp
+        int jc;  // adrese  du jc
+    } type_adresse;
+  
+
+#line 57 "langage.bison.hpp"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -56,10 +66,28 @@ extern int yydebug;
     YYUNDEF = 257,                 /* "invalid token"  */
     NUM = 258,                     /* NUM  */
     VAR = 259,                     /* VAR  */
-    FCT = 260,                     /* FCT  */
-    INC = 261,                     /* INC  */
-    SIN = 262,                     /* SIN  */
-    COS = 263                      /* COS  */
+    SIN = 260,                     /* SIN  */
+    COS = 261,                     /* COS  */
+    SI = 262,                      /* SI  */
+    ALORS = 263,                   /* ALORS  */
+    SINON = 264,                   /* SINON  */
+    FINSI = 265,                   /* FINSI  */
+    SUP = 266,                     /* SUP  */
+    PRINT = 267,                   /* PRINT  */
+    ASSIGN = 268,                  /* ASSIGN  */
+    GOTO = 269,                    /* GOTO  */
+    LABEL = 270,                   /* LABEL  */
+    JMP = 271,                     /* JMP  */
+    JMPCOND = 272,                 /* JMPCOND  */
+    DRAW = 273,                    /* DRAW  */
+    SUR = 274,                     /* SUR  */
+    SUR1 = 275,                    /* SUR1  */
+    SUR2 = 276,                    /* SUR2  */
+    FCT = 277,                     /* FCT  */
+    ADD = 278,                     /* ADD  */
+    SUB = 279,                     /* SUB  */
+    MULT = 280,                    /* MULT  */
+    DIV = 281                      /* DIV  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -68,13 +96,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 28 "parser.y"
+#line 75 "langage.y"
 
   double valeur;
   char nom[50];
-  //double tableau[1000];
+  type_adresse adresse;  
 
-#line 78 "parser.h"
+#line 106 "langage.bison.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -89,4 +117,4 @@ extern YYSTYPE yylval;
 int yyparse (void);
 
 
-#endif /* !YY_YY_PARSER_H_INCLUDED  */
+#endif /* !YY_YY_LANGAGE_BISON_HPP_INCLUDED  */
