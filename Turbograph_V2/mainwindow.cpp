@@ -15,13 +15,14 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    //Initialisation de notre zone de dessin dans l'interface
     ui->setupUi(this);
 
     ui->customPlot->addGraph();
     ui->customPlot->graph(0)->setScatterStyle(QCPScatterStyle::ssNone);
     ui->customPlot->graph()->setLineStyle(QCPGraph::lsLine);
-    ui->customPlot->xAxis->setLabel("X");
-    ui->customPlot->xAxis->setLabel("Y");
+    ui->customPlot->xAxis->setLabel("X"); //Affichage de l'axe X
+    ui->customPlot->xAxis->setLabel("Y"); //Affichage de l'axe Y
     ui->checkBox_1->setVisible(false);
     ui->checkBox_2->setVisible(false);
     ui->checkBox_3->setVisible(false);
@@ -49,6 +50,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_draw_clicked()
 {
+    //Fonction permettant l'utilisation de random
     random_device rd;
        mt19937::result_type seed = rd() ^ (
                (mt19937::result_type)
@@ -89,13 +91,13 @@ void MainWindow::on_draw_clicked()
         }
         QVector<double> x, y;
         QString qstr;
-
-       // int nbLine = 0;
+        //Initialisation de nos variables
         string line;
         string ix;
         string ygrec;
         string fct = "";
         int nbFct = 0;
+        //Boucle while permettant de récuperer les coordonnées de chaque point, on detecte aussi le changement de courbe.
         while(getline(monFlux, line)){
             int addr = line.find(' ');
             int addr2 = line.find(';');
@@ -109,7 +111,6 @@ void MainWindow::on_draw_clicked()
                 if( fct == line.substr(addr2 + 1, line.length())){
                     x.push_front(stod(ix));
                     y.push_front(stod(ygrec));
-                   // nbLine++;
                 } else {
                     if(nbFct + 1 > ui->customPlot->graphCount()){
                         ui->customPlot->addGraph();
@@ -118,7 +119,7 @@ void MainWindow::on_draw_clicked()
                     ui->customPlot->graph(nbFct)->setName(qstr);
                     fct = line.substr(addr2 + 1, line.length());
                     ui->customPlot->graph(nbFct)->setData(x,y);
-                    ui->customPlot->graph(nbFct)->setPen(QColor(distrib(gen), distrib(gen), distrib(gen)));
+                    ui->customPlot->graph(nbFct)->setPen(QColor(distrib(gen), distrib(gen), distrib(gen)));//couleur de courbe aléatoire.
                     ui->customPlot->graph(nbFct)->setVisible(false);
 
                     nbFct++;
@@ -146,7 +147,7 @@ void MainWindow::on_draw_clicked()
             ui->customPlot->graph(i)->data()->clear();
             ui->customPlot->graph(i)->removeFromLegend();
         }
-
+        //Initialisation des Checkbox permettant l'affichage ou non des courbes.
 
         if(nbFct >= 1){
             ui->checkBox_1->setVisible(true);
@@ -189,7 +190,7 @@ void MainWindow::on_draw_clicked()
 
 }
 
-void MainWindow::onMouseMove(QMouseEvent *event)
+void MainWindow::onMouseMove(QMouseEvent *event) //récupération des coordonées de points à la souris.
 {
     double x, y;
     x = this->ui->customPlot->xAxis->pixelToCoord(event->pos().x());
@@ -203,6 +204,7 @@ void MainWindow::onMouseMove(QMouseEvent *event)
 
 }
 
+//Fonctionnement des checkbox.
 void MainWindow::on_checkBox_1_stateChanged(int)
 {
    int visibleOrNot = ui->customPlot->graph(0)->visible();
