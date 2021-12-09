@@ -190,7 +190,7 @@ void MainWindow::on_draw_clicked()
 
 }
 
-void MainWindow::onMouseMove(QMouseEvent *event) //récupération des coordonées de points à la souris.
+void MainWindow::onMouseMove(QMouseEvent *event) //récupération des coordonnées du curseur.
 {
     double x, y;
     x = this->ui->customPlot->xAxis->pixelToCoord(event->pos().x());
