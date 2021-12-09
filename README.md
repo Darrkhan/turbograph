@@ -15,9 +15,9 @@ CIR3 project
     *  __Ligne 80__ (/!\Veuillez respecter la forme __"\\\\"__ entre les noms de dossier)
     *  __Ligne 82__
   * Dans Langage/Langage.y : 
-    *  __Ligne 385__
-    *  __Ligne 399__
-    *  __Ligne 419__
+    *  __Ligne 379__
+    *  __Ligne 393__
+    *  __Ligne 413__
  * #### Une fois les accés changer, il faut executer make dans le dossier Langage
  * #### Dans __QT__, il faut lancer le projet (le plus simle et de double cliquer sur le .pro du dossier); il faut ensuite le build (*si il y a des erreurs les chemins d'accés sont surement pas bon*)
  * ### Initialisation terminée. 
