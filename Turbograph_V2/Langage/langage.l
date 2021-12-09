@@ -8,7 +8,7 @@
 %}
 
 %%
-
+//Déclaration de tous nos mots clés permettant l'executions de nos fonctions.
 [-]?[0-9]+(\.[0-9]*)?([Ee][+-]?[0-9]+)? { // s'il s'agit d'un nombre on le stocke dans le champ "valeur"
                                       yylval.valeur = atof(yytext);
                                       return NUM;

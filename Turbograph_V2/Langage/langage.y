@@ -56,7 +56,7 @@ void execution ( string fonction,
   double valeur;
   char nom[50]; 
 }
-
+//déclaration des tokens.
 %token <valeur> NUM
 %token <nom> VAR
 %type <valeur> expr 
@@ -87,10 +87,10 @@ void execution ( string fonction,
 %left MULT DIV
 
 %%
-bloc:  /* Epsilon */
+bloc:
      | bloc instruction '\n'   
 
-instruction :   /* Epsilon, ligne vide */
+instruction :
             | VAR { fonction = $1; }  '(' VAR ')'  '=' expr { fonction = "main"; }
             | expr         {  }
             | PRINT expr   { add_instruction(PRINT); }
