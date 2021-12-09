@@ -21,24 +21,21 @@
   public:
     instruction (const int &c, const double &v=0, const string &n="") {code = c; value = v; name = n;};  
     int code; 
-    double value;     // éventuellement une valeur si besoin
-    string name;      // ou une référence pour la table des données 
+    double value;
+    string name; 
   };
 
-  // Déclaration de la map qui associe
-  // les noms des variables à leur valeur
-  // (La table de symboles)
+  // Déclaration de la map qui associe les noms des variables à leur valeur
   map<string,double> variables;
   int ic = 0;
   string fonction = "main";
   
-  // Structure pour accueillir le code généré 
-  // (sone de code ou code machine ou assembleur)
+  // Structure pour stocker le code généré 
   map <string, vector <instruction>> code_genere; 
 
+  // Structure pour stocker les points
   map <string, map<double, double>> tableauFctPoints;   
 
-  // Remarquez les paramètres par défaut pour faciliter les appels depuis la grammaire
   int add_instruction(const int &c, const double &v=0, const string &n="", const string &fonction="main") {
       code_genere[fonction].push_back(instruction(c,v,n)); 
       ic++;
@@ -56,7 +53,7 @@ void execution ( string fonction,
   double valeur;
   char nom[50]; 
 }
-//déclaration des tokens.
+//déclaration des tokens
 %token <valeur> NUM
 %token <nom> VAR
 %type <valeur> expr 
@@ -130,8 +127,7 @@ int yyerror(char *s) {
     printf("%s : %s\n", s, yytext);
 }
 
-// Petite fonction pour mieux voir le code généré 
-// (au lieu des nombres associés au tokens)
+// fonction permettant de mieux voir le code généré
 string print_code(int ins) {
   switch (ins) {
     case ADD      : return "ADD";
@@ -163,6 +159,8 @@ string print_code(int ins) {
     default : return "";
   }
 }
+
+
 void execution_fonction (string exec, map<string, vector <instruction>> &param_code_genere, map <string, double> &variables){
   double xmin, xmax;
 
@@ -200,7 +198,6 @@ void execution_fonction (string exec, map<string, vector <instruction>> &param_c
   }
 }
 
-// Fonction qui exécute le code généré sur un petit émulateur
 void execution ( string fonction,
                  map<string, vector <instruction>> &param_code_genere, 
                  map<string,double> &variables )
@@ -213,8 +210,6 @@ void execution ( string fonction,
 
   auto code_genere = param_code_genere[fonction];
 
-  //printf("C'est quoi la réponse à la grande question sur la vie, l'univers et le reste ?\n");
-
   while (ic < code_genere.size()){   // tant que nous ne sommes pas à la fin du programme
     auto ins = code_genere[ic];
 
@@ -223,43 +218,43 @@ void execution ( string fonction,
         execution_fonction (ins.name, param_code_genere, variables );
       break;
       case ADD:
-        r1 = pile.top();    // Rrécupérer la tête de pile;
+        r1 = pile.top();    // Récupérer la tête de pile;
         pile.pop();
 
-        r2 = pile.top();    // Rrécupérer la tête de pile;
+        r2 = pile.top();   
         pile.pop();
         
         pile.push(r1+r2);
       break;
       case MULT:
-        r1 = pile.top();    // Rrécupérer la tête de pile;
+        r1 = pile.top(); 
         pile.pop();
 
-        r2 = pile.top();    // Rrécupérer la tête de pile;
+        r2 = pile.top();   
         pile.pop();
 
         pile.push(r1*r2);
       break;
       case SUB:
-        r1 = pile.top();    // Rrécupérer la tête de pile;
+        r1 = pile.top();   
         pile.pop();
 
-        r2 = pile.top();    // Rrécupérer la tête de pile;
+        r2 = pile.top(); 
         pile.pop();
 
         pile.push(r2-r1);
       break;
       case SUB2:
-        r1 = pile.top();    // Rrécupérer la tête de pile;
+        r1 = pile.top();   
         pile.pop();
 
         pile.push(-r1);
       break;
       case DIV:
-        r1 = pile.top();    // Rrécupérer la tête de pile;
+        r1 = pile.top();  
         pile.pop();
 
-        r2 = pile.top();    // Rrécupérer la tête de pile;
+        r2 = pile.top();  
         pile.pop();
 
         //if(r2 == 0) r2 = 0.00001;
@@ -273,13 +268,13 @@ void execution ( string fonction,
         pile.push(pow(r2,r1));
       break;
       case ASSIGN:
-        r1 = pile.top();    // Rrécupérer la tête de pile;
+        r1 = pile.top();  
         pile.pop();
         variables[ins.name] = r1;
       break;
 
       case PRINT:
-        r1 = pile.top();    // Rrécupérer la tête de pile;
+        r1 = pile.top();   
         pile.pop();
         cout << "$ " << r1 << endl;
       break;
@@ -289,7 +284,6 @@ void execution ( string fonction,
       break;
 
       case VAR:    // je consulte la table de symbole et j'empile la valeur de la variable
-        // Si elle existe bien sur... 
         try {
           pile.push(variables.at(ins.name));
           
@@ -394,7 +388,7 @@ void execution ( string fonction,
 int main(int argc, char **argv) {
   printf("-----------------\nLangage V3.0 / Deep Thought\n");
 
-  // Code pour traiter un fichier au lieu de l'entrée clavier
+  // On traite le fichier test.txt
   
   yyin = fopen( "C:/Users/Administrateur/Documents/Turbograph_V2/Langage/test.txt", "r" );
 
