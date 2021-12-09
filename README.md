@@ -20,3 +20,17 @@ Secondement, vous pouvez tr&cer votre fonction précedemment définie grace a la
 Vous appuyez ensuite sur tracer et vos courbes s'afficheront (en cas de bug réappuuyer sur tracer)
 
 /!\ plus l'interval est grand plus la compilation seras longue.
+
+
+Les fonctions mathématiques utilisable :
+            -Sinus
+            -Cosinus
+            -Tangente
+            -Arcsin
+            -Arccos
+            -Arctan
+            -sqrt (racine carré)
+            -pow (puissance)
+            -multiplication
+            -addition
+            -soustraction
