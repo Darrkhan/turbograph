@@ -34,11 +34,11 @@ CIR3 project
                                            exemple : "f(x) = sin(x)"  
 Vous pouvez en définir plusieurs (/!\ plus vous en définirais plus le programme seras potentiellement lent.)  
      
-### 3. Secondement, vous pouvez tr&cer votre fonction précedemment définie grace a la commande :   
+### 3. Secondement, vous pouvez tracer votre fonction précedemment définie grace a la commande :   
                                       dessiner FCT  sur  Intervalmin   Intervalmax  
                                            exemple : "dessiner f(x) sur 0 10"   
 Vous pouvez afficher plusieur courbes, et changer l'apparition ou non des 5 premières.  
-### 4. Vous appuyez ensuite sur tracer et vos courbes s'afficheront (en cas de bug réappuyer sur tracer)  
+### 4. Vous appuyez ensuite sur tracer (deux fois) et vos courbes s'afficheront (*en cas de bug réappuyer sur tracer*)  
 
 /!\ plus l'interval est grand plus la compilation seras longue.  
 
