@@ -29,6 +29,7 @@ CIR3 project
   * Une zone de graph.  
   * Une zone de texte.  
   * Des checkbox permettant l'affichage ou non des courbes.  
+  * L'affichage de la position du curseur sur la zone de graph.
 
 ### 2. Vous devez définir votre fonction pour commencer.  
                                            exemple : "f(x) = sin(x)"  
@@ -37,32 +38,42 @@ Vous pouvez en définir plusieurs (/!\ plus vous en définirais plus le programm
 ### 3. Secondement, vous pouvez tracer votre fonction précedemment définie grace a la commande :   
                                       dessiner FCT  sur  Intervalmin   Intervalmax  
                                            exemple : "dessiner f(x) sur 0 10"   
-Vous pouvez afficher plusieur courbes, et changer l'apparition ou non des 5 premières.  
+Vous pouvez afficher plusieurs courbes, et changer l'apparition ou non des 5 premières, la casse est ignorée.
 ### 4. Vous appuyez ensuite sur tracer (deux fois) et vos courbes s'afficheront (*en cas de bug réappuyer sur tracer*)  
 
-/!\ plus l'interval est grand plus la compilation seras longue.  
+/!\ plus l'interval est grand plus la compilation sera longue.  
 
 
 ### Les fonctions:  
 * Sinus
-  * sin(variable)
+  * sin(expression)
 * Cosinus
-  * cos(variable)
+  * cos(expression)
 * Tangente
-  * tan(variable) 
+  * tan(expression) 
+* Sinus hyperbolique
+  * sinh(expression)
+* Cosinus hyperbolique
+  * cosh(expression)
+* Tangente hyperbolique
+  * tanh(expression) 
 * Arcsin
-  * arcsin(variable) 
+  * arcsin(expression) 
 * Arccos
-  * arccos(variable)
+  * arccos(expression)
 * Arctan
-  * arctan(variable)
+  * arctan(expression)
 * sqrt (racine carré)
-  * sqrt(variable)
+  * sqrt(expression)
 * pow (puissance)
-  * (variable)^(variable)
+  * (expression) ^ (expression)
 * multiplication
-  * (variable) * (variable)
+  * (expression) * (expression)
 * addition
-  * (variable) + (variable)
+  * (expression) + (expression)
 * soustraction
-  * (variable) - (variable)
+  * (expression) - (expression)
+* division
+  * (expression) / (expression)
+* absolue
+  * abs(expression)
