@@ -1,4 +1,4 @@
-# turbograph
+9# turbograph
 CIR3 project
 
 ## Prérequis
@@ -11,9 +11,9 @@ CIR3 project
 
 * #### il faut vérifier/changer les chemin d'accés dans les différents fichiers :
   * Dans mainwindow.cpp :
-    *  __Ligne 68__
-    *  __Ligne 79__ (/!\Veuillez respecter la forme __"\\\\"__ entre les noms de dossier)
-    *  __Ligne 81__
+    *  __Ligne 69__
+    *  __Ligne 80__ (/!\Veuillez respecter la forme __"\\\\"__ entre les noms de dossier)
+    *  __Ligne 82__
   * Dans Langage/Langage.y : 
     *  __Ligne 385__
     *  __Ligne 399__
