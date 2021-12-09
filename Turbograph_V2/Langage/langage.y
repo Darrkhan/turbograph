@@ -31,18 +31,6 @@
   map<string,double> variables;
   int ic = 0;
   string fonction = "main";
-  // Cette map sert à stocker les adresses associées aux labels (GoTo).
-  // Pour info, il est possible de faire un saut vers une étiquette
-  // qui n'est pas encore déclarée (Saut vers le futur)
-  // En gros, les sauts GoTo ne se font pas uniquement vers l'arrière.
-  // Je vous laisse gérer les problèmes créés par le Goto :
-  // - Saut vers une étiquette inexistante (ni avant, ni après)
-  // - Duplication de labels (Déterminisme !!!)
-  // Ne parlons pas, comme dans l'exmeple, des sauts de blocs de déclarations, 
-  // ou des bloc entremêlés, ou... ou ...
-  // Vous avez compris pourquoi il est banni ?
-  map<string,int> adresses;
-
   
   // Structure pour accueillir le code généré 
   // (sone de code ou code machine ou assembleur)
@@ -64,106 +52,83 @@ void execution ( string fonction,
 
 %}
 
-%code requires
-  {
-    typedef struct adr {
-        int jmp;  // adresse du jmp
-        int jc;  // adrese  du jc
-    } type_adresse;
-  }
-
 %union {
   double valeur;
-  char nom[50];
-  type_adresse adresse;  
+  char nom[50]; 
 }
 
 %token <valeur> NUM
 %token <nom> VAR
 %type <valeur> expr 
 %token SIN
+%token ASIN
+%token SINH
 %token COS
-%token <adresse> SI
-%token ALORS
-%token SINON
-%token FINSI
-%token SUP
+%token ACOS
+%token COSH
+%token TAN
+%token ATAN
+%token TANH
+%token LOG
+%token EXP
+%token POW
 %token PRINT
 %token ASSIGN
-%token GOTO
-%token <nom> LABEL
-%token JMP
-%token JMPCOND
 %token DRAW
 %token SUR
 %token SUR1
 %token SUR2
 %token FCT
+%token SQRT
+%token ABS
 
-%right ADD SUB   // N'oubliez pas de remettre left !
+%right POW
+%right ADD SUB SUB2
 %left MULT DIV
 
 %%
 bloc:  /* Epsilon */
-     | bloc label instruction '\n'   
-
-label : // Epsilon
-      | LABEL ':'  { // Lorsque je rencontre un label
-                     // je stocke le numéro d'instruction actelle
-                     // dans la table des adresses. C'est tout!   
-                     adresses [$1] = ic;}
+     | bloc instruction '\n'   
 
 instruction :   /* Epsilon, ligne vide */
             | VAR { fonction = $1; }  '(' VAR ')'  '=' expr { fonction = "main"; }
             | expr         {  }
             | PRINT expr   { add_instruction(PRINT); }
             | VAR '=' expr { add_instruction(ASSIGN, 0, $1); }
-            | GOTO LABEL   {  // J'insère un JMP vers une adresse que je ne connais pas encore.
-                              // J'utiliserai la table des adresses pour la récupérer lors de l'exécution
-                              add_instruction(JMP, -999, $2); 
-                           }
-            | SI '(' condition ')' '\n' { // Je sauvegarde l'endroit actuel pour revenir mofifier l'adresse 
-                                          // lorsqu'elle sera connue (celle du JC)
-                                          $1.jc = ic;
-                                          add_instruction(JMPCOND); }
-              ALORS '\n'
-                bloc                    { // Je sauvegarde l'endroit actuel pour revenir mofifier l'adresse 
-                                          // lorsqu'elle sera connue (celle du JMP)
-                                          $1.jmp = ic;
-                                          add_instruction(JMP);
-                                          // Je mets à jour l'adresse du saut conditionnel
-                                          code_genere[fonction][$1.jc].value = ic;
-                                        }
-              SINON '\n' 
-                bloc                                  
-              FINSI                     { // Je mets à jour l'adresse du saut inconditionnel
-                                          code_genere[fonction][$1.jmp].value = ic;} 
-              | DRAW VAR '(' VAR ')' SUR NUM NUM { 
+            | DRAW VAR '(' VAR ')' SUR NUM NUM { 
                                     add_instruction(FCT, 0, $2 );
                                     add_instruction(SUR1, $7);  
                                     add_instruction(SUR2, $8);
                                     add_instruction(DRAW);
                                     }                
 
-expr:  NUM               { add_instruction (NUM, $1, "", fonction);   }
-     | VAR               { add_instruction (VAR, 0, $1, fonction);  }
+expr:  NUM               { add_instruction (NUM, $1, "", fonction);  }
+     | VAR               { add_instruction (VAR, 0, $1, fonction); }
      | SIN '(' expr ')'  { add_instruction (SIN, 0, "", fonction); }
+     | ASIN '(' expr ')'  { add_instruction (ASIN, 0, "", fonction); }
+     | SINH '(' expr ')'  { add_instruction (SINH, 0, "", fonction); }
      | COS '(' expr ')'  { add_instruction (COS, 0, "", fonction); }
+     | ACOS '(' expr ')'  { add_instruction (ACOS, 0, "", fonction); }
+     | COSH '(' expr ')'  { add_instruction (COSH, 0, "", fonction); }
+     | TAN '(' expr ')'  { add_instruction (TAN, 0, "", fonction); }
+     | ATAN '(' expr ')'  { add_instruction (ATAN, 0, "", fonction); }
+     | TANH '(' expr ')'  { add_instruction (TANH, 0, "", fonction); }
+     | LOG '(' expr ')'  { add_instruction (LOG, 0, "", fonction); }
+     | EXP '(' expr ')'  { add_instruction (EXP, 0, "", fonction); }
      | '(' expr ')'      { $$ = $2; }
      | expr ADD expr     { add_instruction (ADD, 0, "", fonction); }
-     | expr SUB expr     { add_instruction (SUB, 0, "", fonction); }   		
+     | expr SUB expr     { add_instruction (SUB, 0, "", fonction); } 
+     | SUB expr          { add_instruction (SUB2, 0, "", fonction); }  		
      | expr MULT expr    { add_instruction (MULT, 0, "", fonction); }		
-     | expr DIV expr     { add_instruction (DIV, 0, "", fonction);  }   
-
-
-condition :  expr          {}
-          |  expr SUP expr {}
+     | expr DIV expr     { add_instruction (DIV, 0, "", fonction); }
+     | expr POW expr     { add_instruction (POW, 0, "", fonction); }
+     | SQRT '(' expr ')'  { add_instruction (SQRT, 0, "", fonction); }
+     | ABS '(' expr ')'  { add_instruction (ABS, 0, "", fonction); }
 %%
 
 int yyerror(char *s) {					
     printf("%s : %s\n", s, yytext);
 }
-
 
 // Petite fonction pour mieux voir le code généré 
 // (au lieu des nombres associés au tokens)
@@ -177,14 +142,24 @@ string print_code(int ins) {
     case VAR      : return "VAR";
     case PRINT    : return "OUT";
     case ASSIGN   : return "MOV";
-    case JMP      : return "JMP";
-    case JMPCOND  : return "JC ";
     case SIN      : return "SIN";
+    case ASIN      : return "ASIN";
+    case SINH      : return "SINH";
     case COS      : return "COS";
+    case ACOS      : return "ACOS";
+    case COSH      : return "COSH";
+    case TAN      : return "TAN";
+    case ATAN      : return "ATAN";
+    case TANH      : return "TANH";
+    case LOG      : return "LOG";
+    case EXP      : return "EXP";
+    case POW      : return "POW";
     case DRAW     : return "DRAW";
     case FCT      : return "FCT";
     case SUR1      : return "SUR1";
     case SUR2      : return "SUR2";
+    case SQRT     : return "SQRT";
+    case ABS      : return "ABS";
     default : return "";
   }
 }
@@ -199,37 +174,25 @@ void execution_fonction (string exec, map<string, vector <instruction>> &param_c
 
   while (ic < code_genere.size()){   // tant que nous ne sommes pas à la fin du programme
     auto ins = code_genere[ic];
-    cout << print_code(ins.code) << endl;
-
+    //cout << print_code(ins.code) << endl;
 
     if (trouve || ins.name == exec) { 
       trouve = true;
         switch (ins.code){
           case SUR1 :
             xmin = ins.value;
-
-            cout << xmin << endl;
-
-            
-
+            //cout << xmin << endl;
           break;
           case SUR2 :
             xmax = ins.value;
-            
-            cout << xmax << endl;
-
-            
-
+            //cout << xmax << endl;
           break;
           case DRAW :
-            
-
-            for(double i = xmin; i <= xmax; i+=((xmin+xmax)/100)) {
+            for(double i = xmin; i <= xmax; i+=((xmax - xmin)/((xmax - xmin)*50))) {
               variables["x"] = i;
               execution(exec, param_code_genere, variables);
             }
             trouve = false;
-
           break;
       }
     }
@@ -258,8 +221,6 @@ void execution ( string fonction,
     switch (ins.code){
       case FCT : 
         execution_fonction (ins.name, param_code_genere, variables );
-        
-
       break;
       case ADD:
         r1 = pile.top();    // Rrécupérer la tête de pile;
@@ -269,8 +230,6 @@ void execution ( string fonction,
         pile.pop();
         
         pile.push(r1+r2);
-        
-
       break;
       case MULT:
         r1 = pile.top();    // Rrécupérer la tête de pile;
@@ -280,8 +239,6 @@ void execution ( string fonction,
         pile.pop();
 
         pile.push(r1*r2);
-        
-
       break;
       case SUB:
         r1 = pile.top();    // Rrécupérer la tête de pile;
@@ -290,9 +247,13 @@ void execution ( string fonction,
         r2 = pile.top();    // Rrécupérer la tête de pile;
         pile.pop();
 
-        pile.push(r1-r2);
-        
+        pile.push(r2-r1);
+      break;
+      case SUB2:
+        r1 = pile.top();    // Rrécupérer la tête de pile;
+        pile.pop();
 
+        pile.push(-r1);
       break;
       case DIV:
         r1 = pile.top();    // Rrécupérer la tête de pile;
@@ -301,31 +262,30 @@ void execution ( string fonction,
         r2 = pile.top();    // Rrécupérer la tête de pile;
         pile.pop();
 
-        if(r2 = 0) r2 = 0.00001;
-        pile.push(r1/r2);
-        
-
+        //if(r2 == 0) r2 = 0.00001;
+        pile.push(r2/r1);
+      break;
+      case POW:
+        r1 = pile.top();
+        pile.pop();
+        r2 = pile.top();
+        pile.pop();
+        pile.push(pow(r2,r1));
       break;
       case ASSIGN:
         r1 = pile.top();    // Rrécupérer la tête de pile;
         pile.pop();
         variables[ins.name] = r1;
-        
-
       break;
 
       case PRINT:
         r1 = pile.top();    // Rrécupérer la tête de pile;
         pile.pop();
-        cout << "$ " << r1 << endl; 
-        
-
+        cout << "$ " << r1 << endl;
       break;
 
       case NUM:   // pour un nombre, on empile
         pile.push(ins.value);
-        
-
       break;
 
       case VAR:    // je consulte la table de symbole et j'empile la valeur de la variable
@@ -339,34 +299,92 @@ void execution ( string fonction,
           pile.push(variables.at(ins.name));
         
         }
-
       break;
       case SIN:
         r1 = pile.top();
         pile.pop();
 
         pile.push(sin(r1));
-        
+      break;
+      case ASIN:
+        r1 = pile.top();
+        pile.pop();
 
+        pile.push(asin(r1));
+      break;
+      case SINH:
+        r1 = pile.top();
+        pile.pop();
+
+        pile.push(sinh(r1));
       break;
       case COS:
         r1 = pile.top();
         pile.pop();
 
         pile.push(cos(r1));
-        
+      break;
+      case ACOS:
+        r1 = pile.top();
+        pile.pop();
 
+        pile.push(acos(r1));
+      break;
+      case COSH:
+        r1 = pile.top();
+        pile.pop();
+
+        pile.push(cosh(r1));
+      break;
+      case TAN:
+        r1 = pile.top();
+        pile.pop();
+
+        pile.push(tan(r1));
+      break;
+      case ATAN:
+        r1 = pile.top();
+        pile.pop();
+
+        pile.push(atan(r1));
+      break;
+      case TANH:
+        r1 = pile.top();
+        pile.pop();
+
+        pile.push(tanh(r1));
+      break;
+      case LOG:
+        r1 = pile.top();
+        pile.pop();
+
+        pile.push(log(r1));
+      break;
+      case EXP:
+        r1 = pile.top();
+        pile.pop();
+
+        pile.push(exp(r1));
+      break;
+      case SQRT:
+        r1 = pile.top();
+        pile.pop();
+
+        pile.push(sqrt(r1));
+      break;
+      case ABS:
+        r1 = pile.top();
+        pile.pop();
+
+        pile.push(abs(r1));
       break;
     }
     ic++;
   }
-  
-  cout << "x = " << variables["x"] << endl;
-  cout << "resultat = " << pile.top() << endl;
 
   ofstream a("C:/Users/Administrateur/Documents/Turbograph_V2/Langage/points.txt", ios::app);
   if(a){
-      a << variables["x"] << " " << pile.top() << endl;
+      a << variables["x"] << " " << pile.top() << ";" << fonction << endl;
   }
   else{
       cout << "ERREUR: Impossible d'ouvrir le fichier en lecture." << endl;
@@ -381,7 +399,6 @@ int main(int argc, char **argv) {
   yyin = fopen( "C:/Users/Administrateur/Documents/Turbograph_V2/Langage/test.txt", "r" );
 
   yyparse();						
-
 
   for (auto f : code_genere) {
     cout << "code de la fonction " << f.first << endl;
@@ -399,7 +416,6 @@ int main(int argc, char **argv) {
     }
   }
 
-  
   ofstream a("C:/Users/Administrateur/Documents/Turbograph_V2/Langage/points.txt");
 
   execution("main", code_genere, variables);

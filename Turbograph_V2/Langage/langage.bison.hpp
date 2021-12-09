@@ -44,16 +44,6 @@
 #if YYDEBUG
 extern int yydebug;
 #endif
-/* "%code requires" blocks.  */
-#line 68 "langage.y"
-
-    typedef struct adr {
-        int jmp;  // adresse du jmp
-        int jc;  // adrese  du jc
-    } type_adresse;
-  
-
-#line 57 "langage.bison.hpp"
 
 /* Token kinds.  */
 #ifndef YYTOKENTYPE
@@ -67,27 +57,31 @@ extern int yydebug;
     NUM = 258,                     /* NUM  */
     VAR = 259,                     /* VAR  */
     SIN = 260,                     /* SIN  */
-    COS = 261,                     /* COS  */
-    SI = 262,                      /* SI  */
-    ALORS = 263,                   /* ALORS  */
-    SINON = 264,                   /* SINON  */
-    FINSI = 265,                   /* FINSI  */
-    SUP = 266,                     /* SUP  */
-    PRINT = 267,                   /* PRINT  */
-    ASSIGN = 268,                  /* ASSIGN  */
-    GOTO = 269,                    /* GOTO  */
-    LABEL = 270,                   /* LABEL  */
-    JMP = 271,                     /* JMP  */
-    JMPCOND = 272,                 /* JMPCOND  */
-    DRAW = 273,                    /* DRAW  */
-    SUR = 274,                     /* SUR  */
-    SUR1 = 275,                    /* SUR1  */
-    SUR2 = 276,                    /* SUR2  */
-    FCT = 277,                     /* FCT  */
-    ADD = 278,                     /* ADD  */
-    SUB = 279,                     /* SUB  */
-    MULT = 280,                    /* MULT  */
-    DIV = 281                      /* DIV  */
+    ASIN = 261,                    /* ASIN  */
+    SINH = 262,                    /* SINH  */
+    COS = 263,                     /* COS  */
+    ACOS = 264,                    /* ACOS  */
+    COSH = 265,                    /* COSH  */
+    TAN = 266,                     /* TAN  */
+    ATAN = 267,                    /* ATAN  */
+    TANH = 268,                    /* TANH  */
+    LOG = 269,                     /* LOG  */
+    EXP = 270,                     /* EXP  */
+    POW = 271,                     /* POW  */
+    PRINT = 272,                   /* PRINT  */
+    ASSIGN = 273,                  /* ASSIGN  */
+    DRAW = 274,                    /* DRAW  */
+    SUR = 275,                     /* SUR  */
+    SUR1 = 276,                    /* SUR1  */
+    SUR2 = 277,                    /* SUR2  */
+    FCT = 278,                     /* FCT  */
+    SQRT = 279,                    /* SQRT  */
+    ABS = 280,                     /* ABS  */
+    ADD = 281,                     /* ADD  */
+    SUB = 282,                     /* SUB  */
+    SUB2 = 283,                    /* SUB2  */
+    MULT = 284,                    /* MULT  */
+    DIV = 285                      /* DIV  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -96,13 +90,12 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 75 "langage.y"
+#line 55 "langage.y"
 
   double valeur;
-  char nom[50];
-  type_adresse adresse;  
+  char nom[50]; 
 
-#line 106 "langage.bison.hpp"
+#line 99 "langage.bison.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;

@@ -1,2 +1,0 @@
-f(x) = sin(x)
-dessiner f(x) sur 0 100

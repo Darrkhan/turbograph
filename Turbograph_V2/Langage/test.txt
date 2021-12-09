@@ -1,0 +1,6 @@
+f(x) = sin(x)
+g(x) = cos(x)
+v(x) = x
+dessiner f(x) sur 0 4
+dessiner g(x) sur 0 4
+dessiner v(x) sur 0 4

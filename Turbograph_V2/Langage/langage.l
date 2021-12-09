@@ -1,4 +1,5 @@
 %option noyywrap
+%option caseless
 
 %{
   #include <stdio.h>
@@ -8,7 +9,7 @@
 
 %%
 
-[0-9]+(\.[0-9]*)?([Ee][+-]?[0-9]+)? { // s'il s'agit d'un nombre on le stocke dans le champ "valeur"
+[-]?[0-9]+(\.[0-9]*)?([Ee][+-]?[0-9]+)? { // s'il s'agit d'un nombre on le stocke dans le champ "valeur"
                                       yylval.valeur = atof(yytext);
                                       return NUM;
                                     }
@@ -16,25 +17,23 @@
 \r     { }
 " "    { }
 \t     { }
-Sin|SIN|sin|sinus|Sinus|SINUS { return SIN;  }
-Cos|COS|cos { return COS;  }
-un      { yylval.valeur = 1. ; return NUM; }
-deux    { yylval.valeur = 2. ; return NUM; }
-trois   { yylval.valeur = 3. ; return NUM; }
-plus    { return ADD;}
-fois    { return MULT; }
-Si      { return SI;}
-Alors   { return ALORS;}
-Sinon   { return SINON;}
-FinSi   { return FINSI;}
-Imprime { return PRINT;}
-GoTo    { return GOTO;} 
-dessiner|DESSINER|Dessiner { return DRAW; }
-sur { return SUR; }
-
-@[A-Za-z_][A-Za-z_0-9]* { strcpy( yylval.nom, yytext) ;
-                          return LABEL;
-                       }
+sinus|sin { return SIN;  }
+arcsinus|arcsin|asin { return ASIN; }
+cosinus|cos { return COS; }
+arccosinus|arccos|acos { return ACOS; }
+tangente|tan { return TAN; }
+arctangente|arctan|atan { return ATAN; }
+sinushyperbolique|sinhyperbolique|sinush|sinh { return SINH; }
+cosinushyperbolique|coshyperbolique|cosinush|cosh {return COSH; }
+tangentehyperbolique|tanhyperbolique|tangenteh|tanh { return TANH; }
+logarithme|log { return LOG; }
+exponentielle|exp { return EXP; }
+imprime|impr { return PRINT; }
+dessiner|dessine { return DRAW; }
+sur|dans { return SUR; } 
+"^"|pow { return POW; }
+sqrt { return SQRT; }
+abs { return ABS; }
 
 [A-Za-z_][A-Za-z_0-9]* { // s'il s'agit d'une variable, on stocke son nom dans le champ "nom"
                          strcpy( yylval.nom, yytext) ;
@@ -46,8 +45,6 @@ sur { return SUR; }
 "*"    {  return MULT; }
 "/"    {  return DIV; }
 "="|"<-"    {  return '='; }
-">"    { return SUP; }
-":"    { return ':'; }   
 \(     {  return '('; }
 \)     {  return ')'; }
 <<EOF>>  { printf("\nLe programme est correct!\n"); return 0; }
